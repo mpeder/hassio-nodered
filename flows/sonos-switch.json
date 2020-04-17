@@ -1,0 +1,293 @@
+[
+    {
+        "id": "b3ab68c.696f398",
+        "type": "tab",
+        "label": "Kitchen",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3d48298c.09a706",
+        "type": "server-events",
+        "z": "b3ab68c.696f398",
+        "name": "Kitchen Switch Sonos",
+        "server": "54921e75.80e2c",
+        "event_type": "deconz_event",
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "x": 160,
+        "y": 640,
+        "wires": [
+            [
+                "6df28213.b1eaac"
+            ]
+        ]
+    },
+    {
+        "id": "6df28213.b1eaac",
+        "type": "function",
+        "z": "b3ab68c.696f398",
+        "name": "Payload Translate Func",
+        "func": "if(msg.payload.event.unique_id != \"00:15:8d:00:04:05:08:64\")\n{\n    return;\n}\n\nvar newMsg;\n\nif(msg.payload.event.event == 1001)\n{\n    if (flow.get(\"volume\") == \"UP\")\n    {\n        flow.set(\"volume\", \"DOWN\");\n    }\n    else if (flow.get(\"volume\") == \"DOWN\")\n    {\n        flow.set(\"volume\", \"UP\");\n    }\n    else\n    {\n        flow.set(\"volume\", \"UP\");\n    }\n    \n    if(flow.get(\"volume\") == \"UP\")\n    {\n        newMsg = { payload: \"VOL_START_UP\" };\n    }\n    else if(flow.get(\"volume\") == \"DOWN\")\n    {\n        newMsg = { payload: \"VOL_START_DOWN\" };\n    }\n}\nelse if (msg.payload.event.event == 1003)\n{\n    newMsg = { payload: \"STOP\" };\n}\nelse\n{\n    newMsg = { payload: msg.payload.event.event };    \n}\n\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 310,
+        "y": 740,
+        "wires": [
+            [
+                "e19c4e54.3b3d2"
+            ]
+        ]
+    },
+    {
+        "id": "e19c4e54.3b3d2",
+        "type": "switch",
+        "z": "b3ab68c.696f398",
+        "name": "Sonos Command Type",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1002",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "1004",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "VOL_START_UP",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "VOL_START_DOWN",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "STOP",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 460,
+        "y": 880,
+        "wires": [
+            [
+                "83515b42.f05fa8"
+            ],
+            [
+                "d47cf6f3.da04a8"
+            ],
+            [
+                "1479faae.e8ac65"
+            ],
+            [
+                "2b76fcf0.b21fb4"
+            ],
+            [
+                "2b76fcf0.b21fb4",
+                "1479faae.e8ac65"
+            ]
+        ]
+    },
+    {
+        "id": "83515b42.f05fa8",
+        "type": "api-call-service",
+        "z": "b3ab68c.696f398",
+        "name": "Sonos Play Pause",
+        "server": "54921e75.80e2c",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "media_player",
+        "service": "media_play_pause",
+        "entityId": "media_player.kitchen",
+        "data": "",
+        "dataType": "json",
+        "mergecontext": "",
+        "output_location": "",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1090,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d47cf6f3.da04a8",
+        "type": "api-call-service",
+        "z": "b3ab68c.696f398",
+        "name": "Sonos Play Next",
+        "server": "54921e75.80e2c",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "media_player",
+        "service": "media_next_track",
+        "entityId": "media_player.kitchen",
+        "data": "",
+        "dataType": "json",
+        "mergecontext": "",
+        "output_location": "",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1080,
+        "y": 767,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a2059de6.162a5",
+        "type": "api-call-service",
+        "z": "b3ab68c.696f398",
+        "name": "Sonos Vol Up",
+        "server": "54921e75.80e2c",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "media_player",
+        "service": "volume_up",
+        "entityId": "media_player.kitchen",
+        "data": "",
+        "dataType": "json",
+        "mergecontext": "",
+        "output_location": "",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1080,
+        "y": 840,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c754f297.ad1bd",
+        "type": "api-call-service",
+        "z": "b3ab68c.696f398",
+        "name": "Sonos Vol Up",
+        "server": "54921e75.80e2c",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "media_player",
+        "service": "volume_up",
+        "entityId": "media_player.kitchen_ceiling",
+        "data": "",
+        "dataType": "json",
+        "mergecontext": "",
+        "output_location": "",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1080,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1479faae.e8ac65",
+        "type": "looptimer",
+        "z": "b3ab68c.696f398",
+        "duration": "0.250",
+        "units": "Second",
+        "maxloops": "25",
+        "maxtimeout": "1",
+        "maxtimeoutunits": "Hour",
+        "name": "Volume Up Loop Timer",
+        "x": 780,
+        "y": 920,
+        "wires": [
+            [
+                "a2059de6.162a5",
+                "c754f297.ad1bd"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "2b76fcf0.b21fb4",
+        "type": "looptimer",
+        "z": "b3ab68c.696f398",
+        "duration": "0.250",
+        "units": "Second",
+        "maxloops": "50",
+        "maxtimeout": "1",
+        "maxtimeoutunits": "Hour",
+        "name": "Volume Down Loop Timer",
+        "x": 770,
+        "y": 1000,
+        "wires": [
+            [
+                "cdd1bfe2.c47d2",
+                "46167e1d.7b907"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "cdd1bfe2.c47d2",
+        "type": "api-call-service",
+        "z": "b3ab68c.696f398",
+        "name": "Sonos Vol Down",
+        "server": "54921e75.80e2c",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "media_player",
+        "service": "volume_down",
+        "entityId": "media_player.kitchen",
+        "data": "",
+        "dataType": "json",
+        "mergecontext": "",
+        "output_location": "",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1080,
+        "y": 980,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "46167e1d.7b907",
+        "type": "api-call-service",
+        "z": "b3ab68c.696f398",
+        "name": "Sonos Vol Down",
+        "server": "54921e75.80e2c",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "media_player",
+        "service": "volume_down",
+        "entityId": "media_player.kitchen_ceiling",
+        "data": "",
+        "dataType": "json",
+        "mergecontext": "",
+        "output_location": "",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1080,
+        "y": 1040,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "54921e75.80e2c",
+        "type": "server",
+        "z": "",
+        "name": "Home Assistant"
+    }
+]
