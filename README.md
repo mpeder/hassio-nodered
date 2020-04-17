@@ -12,3 +12,5 @@ Functionality:
  
  Flow:
  ![Sonos switch](images/sonos-switch.png)
+
+
