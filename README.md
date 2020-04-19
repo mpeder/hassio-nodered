@@ -2,6 +2,9 @@
 In this repo you can find various code/config examples flows for Node-RED in Home Assistant.
 
 ## Sonos & Aqara Switch
+Hardware:
+[Aqara Switch](https://www.aqara.com/en/smart_wireless_mini_switch.html)
+
 Flow source:
 [Sonos Switch](flows/sonos-switch.json)
 
